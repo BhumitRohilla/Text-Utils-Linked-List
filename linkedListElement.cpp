@@ -48,7 +48,7 @@ void mstring::insert(){
     {
         char test = getc(stdin);
         if(test=='`'){
-            std::cout<<"End the file"<<std::endl;
+            //*std::cout<<"End the file"<<std::endl;
             str=removeSpaces(str);
             if(str!=""){
                 if( head == NULL ){
@@ -234,10 +234,12 @@ void mstring::push(int num, Node *node,int location){
 
 void mstring::undo(){
     data temp=this->undoStack.pop();
+    getch();
     if(temp.operation==-1){
         std::cout<<"Undo Stack is empty"<<std::endl<<std::endl;
         return ;
     }
+    getch();
     switch (temp.operation)
     {
         case 0:{
@@ -254,7 +256,7 @@ void mstring::undo(){
             rtemp.location=temp.location;
             rtemp.node = temp.node;
             std::cout<<std::endl<<rtemp.operation<<"  "<<rtemp.location<<std::endl;
-            //*this->redoStack.push(rtemp);
+            this->redoStack.push(rtemp);
             Node * itr=this->head;
             if(temp.location == 0){
                 this->head=this->head->next;
@@ -283,9 +285,9 @@ void mstring::undo(){
             data rtemp;
             rtemp.operation = 1;
             rtemp.node=temp.node;
-            rtemp.location=rtemp.location;
+            rtemp.location=temp.location;
             this->redoStack.push(rtemp);
-            int count=temp.location-1;
+            int count=temp.location;
             Node *itr = this->head;
             if(temp.location == 0){
                 temp.node->next=this->head;
@@ -327,7 +329,7 @@ void mstring::redo(){
             utemp.operation = 3;
             utemp.location = temp.location;
             utemp.node = temp.node;
-            //*std::cout<<std::endl<<utemp.operation<<" "<<utemp.location<<std::endl;
+            std::cout<<std::endl<<utemp.operation<<" "<<utemp.location<<std::endl;
             this->undoStack.push(utemp);
             Node *itr = this->head;
             if(temp.location == 0){
@@ -359,7 +361,7 @@ void mstring::redo(){
             utemp.node = temp.node;
             utemp.location = temp.location;
             this->undoStack.push(utemp);
-            int count=temp.location-1;
+            int count=temp.location;
             Node * itr = this->head;
             if(temp.location == 0){
                 temp.node->next = this->head;
@@ -463,6 +465,6 @@ int main(){
                 system("CLS");
             }
         }
-        
+        fflush(stdin);
    }
 }
